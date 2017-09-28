@@ -609,8 +609,8 @@ void add_line(WINDOW *window, int y, int x, line_t *line, int max_cols, int colo
             inline_display(window, &line->text->value[offset], colors);
         } else {
 
-            // IS_CENTER
-            if(CHECK_BIT(line->bits, IS_CENTER)) {
+            // centering IS_H1
+            if(CHECK_BIT(line->bits, IS_H1)) {
                 if(line->length < max_cols) {
                     wmove(window, y, x + ((max_cols - line->length) / 2));
                 }
@@ -622,10 +622,6 @@ void add_line(WINDOW *window, int y, int x, line_t *line, int max_cols, int colo
                 // set headline color
                 if(colors)
                     wattron(window, COLOR_PAIR(CP_BLUE));
-
-                // enable underline for H1
-                if(CHECK_BIT(line->bits, IS_H1))
-                    wattron(window, A_UNDERLINE);
 
                 // skip hashes
                 while(line->text->value[offset] == '#')

@@ -563,31 +563,6 @@ int markdown_analyse(cstring_t *text, int prev) {
                 SET_BIT(bits, IS_QUOTE);
             }
 
-            // IS_CENTER
-            if(text->size >= offset + 3 &&
-               text->value[offset] == L'-' &&
-               text->value[offset + 1] == L'>' &&
-               iswspace(text->value[offset + 2])) {
-                SET_BIT(bits, IS_CENTER);
-
-                // remove start tag
-                (text->strip)(text, offset, 3);
-                eol -= 3;
-
-                if(text->size >= offset + 3 &&
-                   text->value[eol - 1] == L'-' &&
-                   text->value[eol - 2] == L'<' &&
-                   iswspace(text->value[eol - 3])) {
-
-                    // remove end tags
-                    (text->strip)(text, eol - 3, 3);
-
-                    // adjust end of line
-                    for(eol = text->size; eol > offset && iswspace(text->value[eol - 1]); eol--);
-
-                }
-            }
-
             for(i = offset; i < eol; i++) {
 
                 if(iswspace(text->value[i])) {
