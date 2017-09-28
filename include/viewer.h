@@ -44,11 +44,11 @@
 #include "cstack.h"
 #include "url.h"
 
-#define CP_WHITE  1 // 255
-#define CP_BLUE   2 // 123
-#define CP_RED    3 // 213
-#define CP_YELLOW 4 // 208
-#define CP_BLACK  5 // CP_WHITE with foreground and background swapped
+#define CP_WHITE  1
+#define CP_LINK   2
+#define CP_BOLD   3
+#define CP_TITLE  4
+#define CP_CODE   5
 
 #define FADE_DELAY 15000 // micro seconds
 #define GOTO_SLIDE_DELAY 5    // tenths of seconds

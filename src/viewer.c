@@ -158,24 +158,11 @@ int ncurses_display(deck_t *deck, int reload, int noreload, int slidenum) {
         start_color();
         use_default_colors();
 
-        // 256 color mode
-        if(COLORS == 256) {
-
-            init_pair(CP_WHITE, 255, -1);
-            init_pair(CP_BLUE, 123, -1);
-            init_pair(CP_RED, 213, -1);
-            init_pair(CP_BLACK, 16, 255);
-            init_pair(CP_YELLOW, 208, -1);
-
-        // 8 color mode
-        } else {
-
-            init_pair(CP_WHITE, 7, -1);
-            init_pair(CP_BLACK, 0, 7);
-            init_pair(CP_BLUE, 4, -1);
-            init_pair(CP_RED, 1, -1);
-            init_pair(CP_YELLOW, 3, -1);
-        }
+        init_pair(CP_WHITE, COLOR_WHITE, -1);
+        init_pair(CP_LINK, COLOR_CYAN, -1);
+        init_pair(CP_BOLD, COLOR_RED, -1);
+        init_pair(CP_TITLE, COLOR_GREEN + 8, -1);
+        init_pair(CP_CODE, COLOR_BLACK, COLOR_WHITE);
 
         colors = 1;
     }
@@ -217,7 +204,7 @@ int ncurses_display(deck_t *deck, int reload, int noreload, int slidenum) {
 
         // set main window text color
         if(colors)
-            wattron(stdscr, COLOR_PAIR(CP_YELLOW));
+            wattron(stdscr, COLOR_PAIR(CP_TITLE));
 
         // setup header
         if(bar_top) {
@@ -487,7 +474,7 @@ void add_line(WINDOW *window, int y, int x, line_t *line, int max_cols, int colo
         // fill rest off line with spaces if we are in a code block
         if(CHECK_BIT(line->bits, IS_CODE) && colors) {
             if(colors)
-                wattron(window, COLOR_PAIR(CP_BLACK));
+                wattron(window, COLOR_PAIR(CP_CODE));
             for(i = getcurx(window) - x; i < max_cols; i++)
                 wprintw(window, "%s", " ");
         }
@@ -575,7 +562,7 @@ void add_line(WINDOW *window, int y, int x, line_t *line, int max_cols, int colo
 
         // reverse color for code blocks
         if(colors)
-            wattron(window, COLOR_PAIR(CP_BLACK));
+            wattron(window, COLOR_PAIR(CP_CODE));
 
         // print whole lines
         waddwstr(window, &line->text->value[offset]);
@@ -591,7 +578,7 @@ void add_line(WINDOW *window, int y, int x, line_t *line, int max_cols, int colo
             while(line->text->value[offset] == '>') {
                 // print a reverse color block
                 if(colors) {
-                    wattron(window, COLOR_PAIR(CP_BLACK));
+                    wattron(window, COLOR_PAIR(CP_CODE));
                     wprintw(window, "%s", " ");
                     wattron(window, COLOR_PAIR(CP_WHITE));
                     wprintw(window, "%s", " ");
@@ -620,7 +607,7 @@ void add_line(WINDOW *window, int y, int x, line_t *line, int max_cols, int colo
 
                 // set headline color
                 if(colors)
-                    wattron(window, COLOR_PAIR(CP_BLUE));
+                    wattron(window, COLOR_PAIR(CP_LINK));
 
                 // skip hashes
                 while(line->text->value[offset] == '#')
@@ -686,7 +673,7 @@ void inline_display(WINDOW *window, const wchar_t *c, const int colors) {
                     // disable inline code
                     case L'`':
                         if(colors)
-                            wattron(window, COLOR_PAIR(CP_WHITE));
+                            wattron(window, COLOR_PAIR(CP_CODE));
                         break;
                 }
 
@@ -723,7 +710,7 @@ void inline_display(WINDOW *window, const wchar_t *c, const int colors) {
 
                             // turn higlighting and underlining on
                             if (colors)
-                                wattron(window, COLOR_PAIR(CP_BLUE));
+                                wattron(window, COLOR_PAIR(CP_LINK));
                             wattron(window, A_UNDERLINE);
 
                             start_link_name = i;
@@ -760,7 +747,7 @@ void inline_display(WINDOW *window, const wchar_t *c, const int colors) {
                         // enable highlight
                         case L'*':
                             if(colors)
-                                wattron(window, COLOR_PAIR(CP_RED));
+                                wattron(window, COLOR_PAIR(CP_BOLD));
                             break;
                         // enable underline
                         case L'_':
@@ -769,7 +756,7 @@ void inline_display(WINDOW *window, const wchar_t *c, const int colors) {
                         // enable inline code
                         case L'`':
                             if(colors)
-                                wattron(window, COLOR_PAIR(CP_BLACK));
+                                wattron(window, COLOR_PAIR(CP_CODE));
                             break;
                         // do nothing for backslashes
                     }
