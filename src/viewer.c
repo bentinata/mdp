@@ -48,7 +48,6 @@ int ncurses_display(deck_t *deck, int reload, int noreload, int slidenum) {
     int lc = 0;               // line count
     int sc = 1;               // slide count
     int colors = 0;           // amount of colors supported
-    int trans = -1;           // enable transparency if term supports it
     int max_lines = 0;        // max lines per slide
     int max_lines_slide = -1; // the slide that has the most lines
     int max_cols = 0;         // max columns per line
@@ -162,20 +161,20 @@ int ncurses_display(deck_t *deck, int reload, int noreload, int slidenum) {
         // 256 color mode
         if(COLORS == 256) {
 
-            init_pair(CP_WHITE, 255, trans);
-            init_pair(CP_BLUE, 123, trans);
-            init_pair(CP_RED, 213, trans);
+            init_pair(CP_WHITE, 255, -1);
+            init_pair(CP_BLUE, 123, -1);
+            init_pair(CP_RED, 213, -1);
             init_pair(CP_BLACK, 16, 255);
-            init_pair(CP_YELLOW, 208, trans);
+            init_pair(CP_YELLOW, 208, -1);
 
         // 8 color mode
         } else {
 
-            init_pair(CP_WHITE, 7, trans);
+            init_pair(CP_WHITE, 7, -1);
             init_pair(CP_BLACK, 0, 7);
-            init_pair(CP_BLUE, 4, trans);
-            init_pair(CP_RED, 1, trans);
-            init_pair(CP_YELLOW, 3, trans);
+            init_pair(CP_BLUE, 4, -1);
+            init_pair(CP_RED, 1, -1);
+            init_pair(CP_YELLOW, 3, -1);
         }
 
         colors = 1;
