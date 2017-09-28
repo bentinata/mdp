@@ -3,8 +3,7 @@
 
 /*
  * Functions necessary to display a deck of slides in different color modes
- * using ncurses. Only white, red, and blue are supported, as they can be
- * faded in 256 color mode.
+ * using ncurses.
  * Copyright (C) 2016 Michael Goehler
  *
  * This file is part of mdp.
@@ -27,7 +26,6 @@
  *           window geometry and handles key strokes
  * function: add_line detects inline markdown formating and prints line char
  *           by char
- * function: fade_in, fade_out implementing color fading in 256 color mode
  * function: int_length to calculate decimal length of slide count
  *
  */
@@ -55,11 +53,9 @@
 #define FADE_DELAY 15000 // micro seconds
 #define GOTO_SLIDE_DELAY 5    // tenths of seconds
 
-int ncurses_display(deck_t *deck, int notrans, int nofade, int invert, int reload, int noreload, int slidenum);
+int ncurses_display(deck_t *deck, int reload, int noreload, int slidenum);
 void add_line(WINDOW *window, int y, int x, line_t *line, int max_cols, int colors);
 void inline_display(WINDOW *window, const wchar_t *c, const int colors);
-void fade_out(WINDOW *window, int trans, int colors, int invert);
-void fade_in(WINDOW *window, int trans, int colors, int invert);
 int int_length (int val);
 int get_slide_number(char init);
 void setup_list_strings(void);
